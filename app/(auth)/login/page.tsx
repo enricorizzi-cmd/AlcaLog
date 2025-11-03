@@ -28,19 +28,30 @@ export default function LoginPage() {
         body: JSON.stringify({ email, password }),
       });
 
-      const data = await response.json();
-
       if (!response.ok) {
-        setError(data.error || 'Credenziali non valide');
+        let errorMessage = 'Errore durante il login';
+        try {
+          const data = await response.json();
+          errorMessage = data.error || errorMessage;
+        } catch {
+          // Se non riesce a parsare il JSON, usa il testo della risposta
+          errorMessage = `Errore ${response.status}: ${response.statusText}`;
+        }
+        setError(errorMessage);
         return;
       }
+
+      const data = await response.json();
 
       // Login riuscito, reindirizza alla dashboard
       router.push('/dashboard');
       router.refresh();
     } catch (err) {
-      setError('Errore durante il login');
-      console.error(err);
+      console.error('Errore fetch login:', err);
+      const errorMessage = err instanceof Error 
+        ? `Errore di connessione: ${err.message}` 
+        : 'Impossibile connettersi al server. Verifica la connessione.';
+      setError(errorMessage);
     } finally {
       setLoading(false);
     }
