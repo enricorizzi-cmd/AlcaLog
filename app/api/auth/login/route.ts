@@ -3,14 +3,28 @@ import { createClient } from '@supabase/supabase-js';
 
 export async function POST(request: NextRequest) {
   try {
-    // Verifica variabili d'ambiente
-    if (!process.env.NEXT_PUBLIC_SUPABASE_URL || !process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY) {
+    // Verifica variabili d'ambiente e pulisci da spazi/caratteri nascosti
+    let supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL?.trim();
+    let supabaseKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY?.trim();
+
+    if (!supabaseUrl || !supabaseKey) {
       console.error('Variabili Supabase mancanti:', {
-        hasUrl: !!process.env.NEXT_PUBLIC_SUPABASE_URL,
-        hasKey: !!process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY,
+        hasUrl: !!supabaseUrl,
+        hasKey: !!supabaseKey,
+        urlLength: supabaseUrl?.length,
+        keyLength: supabaseKey?.length,
       });
       return NextResponse.json(
         { error: 'Configurazione server non valida' },
+        { status: 500 }
+      );
+    }
+
+    // Verifica formato URL
+    if (!supabaseUrl.startsWith('https://')) {
+      console.error('URL Supabase non valido:', supabaseUrl);
+      return NextResponse.json(
+        { error: 'Configurazione Supabase non valida' },
         { status: 500 }
       );
     }
@@ -24,20 +38,10 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    // Verifica che l'URL di Supabase sia valido
-    const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
-    if (!supabaseUrl || !supabaseUrl.startsWith('https://')) {
-      console.error('URL Supabase non valido:', supabaseUrl);
-      return NextResponse.json(
-        { error: 'Configurazione Supabase non valida' },
-        { status: 500 }
-      );
-    }
-
     // Usa client Supabase diretto con configurazione per retry e timeout
     const supabase = createClient(
       supabaseUrl,
-      process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
+      supabaseKey,
       {
         auth: {
           persistSession: false,
