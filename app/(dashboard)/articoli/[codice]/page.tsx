@@ -75,7 +75,8 @@ export default function ArticoloDettaglioPage() {
     }
 
     // Se quantità > 0, prezzo obbligatorio
-    if (formLotto.quantita && parseFloat(formLotto.quantita) || '0') > 0) {
+    const quantitaNum = parseFloat(formLotto.quantita || '0');
+    if (formLotto.quantita && quantitaNum > 0) {
       if (!formLotto.prezzo_unitario || (!formLotto.sede || !formLotto.sezione)) {
         setError('Per quantità > 0, prezzo, sede e sezione sono obbligatori');
         setSubmitting(false);
