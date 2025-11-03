@@ -1,7 +1,19 @@
+import DashboardPage from '@/app/(dashboard)/page';
+import { createClient } from '@/lib/supabase/server';
 import { redirect } from 'next/navigation';
 
-// Redirect da /dashboard a / (dove si trova la dashboard in (dashboard)/page.tsx)
-export default function DashboardRedirect() {
-  redirect('/');
+// Renderizza la dashboard da (dashboard)/page.tsx ma con URL /dashboard
+export default async function DashboardRoute() {
+  const supabase = await createClient();
+  
+  const {
+    data: { user },
+  } = await supabase.auth.getUser();
+
+  if (!user) {
+    redirect('/login');
+  }
+
+  return <DashboardPage />;
 }
 

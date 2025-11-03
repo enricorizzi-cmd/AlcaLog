@@ -9,9 +9,9 @@ export default async function HomePage() {
   } = await supabase.auth.getUser();
 
   if (user) {
-    // Redirect alla dashboard che è in (dashboard)/page.tsx
-    // In Next.js App Router, (dashboard) è un route group quindi la pagina è accessibile da /
-    // Per mantenere /dashboard, creiamo un redirect
+    // Se l'utente è loggato, mostra la dashboard
+    // La dashboard è in (dashboard)/page.tsx che è accessibile da / quando si usa il route group
+    // Per mantenere /dashboard come URL, reindirizziamo
     redirect('/dashboard');
   } else {
     redirect('/login');
