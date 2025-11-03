@@ -127,6 +127,7 @@ alcalog-app
 ```
 npm install && npm run build
 ```
+**Nota**: Il build usa automaticamente `--webpack` per compatibilità con next-pwa
 
 #### **Start Command**
 ```

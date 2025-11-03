@@ -3,7 +3,8 @@ import withPWA from "next-pwa";
 
 const nextConfig: NextConfig = {
   reactStrictMode: true,
-  // Configurazione per Next.js 16 - usa webpack di default per compatibilità next-pwa
+  // Disabilita Turbopack - next-pwa richiede webpack
+  // Configurazione webpack per compatibilità next-pwa
   webpack: (config: any, { isServer }: any) => {
     return config;
   },

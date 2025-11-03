@@ -4,8 +4,8 @@
   "private": true,
   "scripts": {
     "dev": "next dev",
-    "build": "next build",
-    "build:webpack": "cross-env USE_WEBPACK=true next build",
+    "build": "next build --webpack",
+    "build:webpack": "next build --webpack",
     "start": "next start",
     "lint": "eslint",
     "create:render": "node scripts/create-render-service-semplice.mjs"
