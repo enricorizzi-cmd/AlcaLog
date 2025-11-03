@@ -87,3 +87,4 @@ SELECT * FROM ordini_residuo_v LIMIT 1;
 - Controlla se ci sono errori durante l'esecuzione della migrazione
 - Assicurati di aver copiato TUTTO il contenuto dello script SQL
 
+

@@ -66,3 +66,4 @@ export async function calcolaPrezzoMedioFIFOBatch(
   return results;
 }
 
+

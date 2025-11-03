@@ -71,3 +71,4 @@ export function generaPDFEtichetta(data: EtichettaData): Blob {
   return new Blob(['PDF placeholder'], { type: 'application/pdf' });
 }
 
+

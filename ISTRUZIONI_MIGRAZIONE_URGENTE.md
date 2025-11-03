@@ -69,3 +69,4 @@ Se vedi errori di permessi:
 
 **Dopo aver eseguito la migrazione, tutte le funzionalità dovrebbero funzionare correttamente!**
 
+

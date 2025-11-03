@@ -472,3 +472,4 @@ COMMENT ON TABLE articoli_lotti IS 'Lotti articoli con BATCH_ID (alfanumerico) e
 COMMENT ON TABLE movimenti_magazzino IS 'Tutti i movimenti: CARICO, SCARICO, TRASF_OUT, TRASF_IN';
 COMMENT ON VIEW giacenze_v IS 'Vista calcolo real-time giacenze con FIFO globale e scorta media 12m';
 
+

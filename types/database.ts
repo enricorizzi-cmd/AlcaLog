@@ -212,3 +212,4 @@ export type NotificaEvento =
   | 'PRELIEVO_NEGATIVO_O_LOTTO_ASSENTE'
   | 'INVENTARIO_INVIATO';
 
+

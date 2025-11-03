@@ -111,3 +111,4 @@ LEFT JOIN ruoli_tab_abilitate rta ON r.codice = rta.ruolo_codice
 WHERE u.email = 'enricorizzi1991@gmail.com'
 GROUP BY u.id, u.email, up.nome, up.cognome, up.ruolo_codice, r.descrizione;
 
+

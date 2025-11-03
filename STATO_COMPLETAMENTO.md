@@ -149,3 +149,4 @@ Il progetto è **pronto per il deploy** su Render.com con le seguenti funzionali
 
 **Il progetto ALCALOG è operativo e pronto per l'uso!** 🎉
 
+
