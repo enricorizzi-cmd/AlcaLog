@@ -7,7 +7,8 @@
     "build": "next build",
     "build:webpack": "cross-env USE_WEBPACK=true next build",
     "start": "next start",
-    "lint": "eslint"
+    "lint": "eslint",
+    "create:render": "node scripts/create-render-service-semplice.mjs"
   },
   "dependencies": {
     "@hookform/resolvers": "^5.2.2",
