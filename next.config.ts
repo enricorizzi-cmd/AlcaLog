@@ -1,7 +1,20 @@
 import type { NextConfig } from "next";
+import withPWA from "next-pwa";
 
 const nextConfig: NextConfig = {
-  /* config options here */
+  reactStrictMode: true,
+  // Configurazione per Next.js 16 - usa webpack di default per compatibilità next-pwa
+  webpack: (config: any, { isServer }: any) => {
+    return config;
+  },
 };
 
-export default nextConfig;
+const pwaConfig = withPWA({
+  dest: "public",
+  register: true,
+  skipWaiting: true,
+  disable: process.env.NODE_ENV === "development", // Disabilita PWA in sviluppo per debug più veloce
+  buildExcludes: [/middleware-manifest\.json$/],
+});
+
+export default pwaConfig(nextConfig);
