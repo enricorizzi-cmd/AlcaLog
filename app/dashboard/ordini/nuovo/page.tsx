@@ -13,6 +13,7 @@ import Link from 'next/link';
 export default function NuovoOrdinePage() {
   const router = useRouter();
   const [fornitori, setFornitori] = useState<any[]>([]);
+  const [articoli, setArticoli] = useState<any[]>([]);
   const [formData, setFormData] = useState({
     data_ordine: new Date().toISOString().split('T')[0],
     numero_ordine: '',
@@ -30,6 +31,7 @@ export default function NuovoOrdinePage() {
 
   useEffect(() => {
     loadFornitori();
+    loadArticoli();
   }, []);
 
   const loadFornitori = async () => {
@@ -41,6 +43,18 @@ export default function NuovoOrdinePage() {
       }
     } catch (err) {
       console.error('Errore caricamento fornitori:', err);
+    }
+  };
+
+  const loadArticoli = async () => {
+    try {
+      const response = await fetch('/api/articoli?archiviato=false');
+      if (response.ok) {
+        const data = await response.json();
+        setArticoli(data || []);
+      }
+    } catch (err) {
+      console.error('Errore caricamento articoli:', err);
     }
   };
 
@@ -199,16 +213,36 @@ export default function NuovoOrdinePage() {
                   {righe.map((riga, idx) => (
                     <TableRow key={idx}>
                       <TableCell>
-                        <Input
-                          value={riga.articolo}
-                          onChange={(e) => {
+                        <Select
+                          value={riga.articolo || 'none'}
+                          onValueChange={(v) => {
                             const nuoveRighe = [...righe];
-                            nuoveRighe[idx].articolo = e.target.value;
+                            if (v === 'none') {
+                              nuoveRighe[idx].articolo = '';
+                              nuoveRighe[idx].descrizione = '';
+                            } else {
+                              nuoveRighe[idx].articolo = v;
+                              // Auto-riempire la descrizione se l'articolo è selezionato
+                              const articoloSelezionato = articoli.find(a => a.codice_interno === v);
+                              if (articoloSelezionato) {
+                                nuoveRighe[idx].descrizione = articoloSelezionato.descrizione || '';
+                              }
+                            }
                             setRighe(nuoveRighe);
                           }}
-                          placeholder="Codice articolo"
-                          required
-                        />
+                        >
+                          <SelectTrigger className="w-full">
+                            <SelectValue placeholder="Seleziona articolo" />
+                          </SelectTrigger>
+                          <SelectContent>
+                            <SelectItem value="none">Nessuno</SelectItem>
+                            {articoli.map((articolo) => (
+                              <SelectItem key={articolo.codice_interno} value={articolo.codice_interno}>
+                                {articolo.codice_interno} - {articolo.descrizione}
+                              </SelectItem>
+                            ))}
+                          </SelectContent>
+                        </Select>
                       </TableCell>
                       <TableCell>
                         <Input
