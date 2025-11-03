@@ -13,7 +13,7 @@ export async function GET(request: NextRequest) {
 
     let query = supabase
       .from('ordini_fornitori')
-      .select('*, fornitori:fornitore_movimento(*)')
+      .select('*')
       .order('data_ordine', { ascending: false });
 
     // Filtri
@@ -30,13 +30,38 @@ export async function GET(request: NextRequest) {
     const { data, error } = await query;
 
     if (error) {
+      console.error('Errore query ordini:', error);
       return NextResponse.json(
         { error: error.message },
         { status: 400 }
       );
     }
 
-    return NextResponse.json(data);
+    // Se non ci sono ordini, ritorna array vuoto invece di errore
+    if (!data) {
+      return NextResponse.json([]);
+    }
+
+    // Arricchisci con dati fornitore se necessario
+    const ordiniArricchiti = await Promise.all(
+      (data || []).map(async (ordine: any) => {
+        if (ordine.fornitore_movimento) {
+          const { data: fornitore } = await supabase
+            .from('fornitori')
+            .select('*')
+            .eq('codice', ordine.fornitore_movimento)
+            .single();
+          
+          return {
+            ...ordine,
+            fornitore: fornitore || null,
+          };
+        }
+        return ordine;
+      })
+    );
+
+    return NextResponse.json(ordiniArricchiti);
   } catch (error) {
     console.error('Errore recupero ordini:', error);
     return NextResponse.json(
