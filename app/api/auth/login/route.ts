@@ -45,11 +45,13 @@ export async function POST(request: NextRequest) {
         },
         global: {
           fetch: (url, options = {}) => {
+            // Timeout manuale per compatibilità
+            const controller = new AbortController();
+            const timeoutId = setTimeout(() => controller.abort(), 30000);
             return fetch(url, {
               ...options,
-              // Timeout più lungo per Render
-              signal: AbortSignal.timeout ? AbortSignal.timeout(30000) : undefined,
-            });
+              signal: controller.signal,
+            }).finally(() => clearTimeout(timeoutId));
           },
         },
       }
