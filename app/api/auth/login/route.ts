@@ -86,49 +86,37 @@ export async function POST(request: NextRequest) {
             continue;
           }
         } else {
-          // Successo!
-      // Salva la sessione nei cookie usando Supabase SSR
-      const cookieStore = await cookies();
-      const supabaseSSR = createServerClient(
-        supabaseUrl,
-        supabaseKey,
-        {
-          cookies: {
-            getAll() {
-              return cookieStore.getAll();
-            },
-            setAll(cookiesToSet) {
-              cookiesToSet.forEach(({ name, value, options }) => {
-                cookieStore.set(name, value, options);
-              });
-            },
-          },
-        }
-      );
+          // Successo! Salva la sessione nei cookie usando Supabase SSR
+          let response = NextResponse.json({
+            user: data.user,
+            session: data.session,
+          });
 
-      // Imposta la sessione nel client SSR
-      await supabaseSSR.auth.setSession({
-        access_token: data.session.access_token,
-        refresh_token: data.session.refresh_token,
-      });
+          const supabaseSSR = createServerClient(
+            supabaseUrl,
+            supabaseKey,
+            {
+              cookies: {
+                getAll() {
+                  return request.cookies.getAll();
+                },
+                setAll(cookiesToSet) {
+                  cookiesToSet.forEach(({ name, value, options }) => {
+                    request.cookies.set(name, value);
+                    response.cookies.set(name, value, options);
+                  });
+                },
+              },
+            }
+          );
 
-      // Crea la risposta con i cookie aggiornati
-      const response = NextResponse.json({
-        user: data.user,
-        session: data.session,
-      });
+          // Imposta la sessione nel client SSR (questo imposterà i cookie automaticamente)
+          await supabaseSSR.auth.setSession({
+            access_token: data.session.access_token,
+            refresh_token: data.session.refresh_token,
+          });
 
-      // Copia i cookie dalla cookieStore alla risposta
-      cookieStore.getAll().forEach((cookie) => {
-        response.cookies.set(cookie.name, cookie.value, {
-          httpOnly: true,
-          secure: process.env.NODE_ENV === 'production',
-          sameSite: 'lax',
-          path: '/',
-        });
-      });
-
-      return response;
+          return response;
         }
       } catch (err) {
         lastError = err;
