@@ -10,7 +10,7 @@ const inter = Inter({
 export const metadata: Metadata = {
   title: "ALCA LOG - Gestione Magazzino",
   description: "Sistema di gestione e tracciabilità logistica per ALCA FOOD",
-  manifest: "/manifest.json",
+  // manifest: "/manifest.json", // Temporaneamente disabilitato per evitare errori console
   themeColor: "#E30613",
   viewport: "width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no",
   icons: {
