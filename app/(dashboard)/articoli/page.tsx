@@ -12,9 +12,14 @@ import Link from 'next/link';
 import type { Articolo } from '@/types/database';
 import type { Fornitore } from '@/types/database';
 
-type ArticoloWithFornitore = Articolo & {
+type ArticoloWithFornitore = Omit<Articolo, 'fornitore_predefinito'> & {
   fornitore_predefinito?: string | Fornitore | null;
 };
+
+// Type guard per verificare se è un oggetto Fornitore
+function isFornitore(obj: any): obj is Fornitore {
+  return obj && typeof obj === 'object' && 'descrizione' in obj && 'codice' in obj;
+}
 
 export default function ArticoliPage() {
   const [articoli, setArticoli] = useState<ArticoloWithFornitore[]>([]);
@@ -147,7 +152,7 @@ export default function ArticoliPage() {
                       </TableCell>
                       <TableCell>{articolo.unita_misura || '-'}</TableCell>
                       <TableCell>
-                        {typeof articolo.fornitore_predefinito === 'object' && articolo.fornitore_predefinito
+                        {isFornitore(articolo.fornitore_predefinito)
                           ? articolo.fornitore_predefinito.descrizione
                           : articolo.fornitore_predefinito || '-'}
                       </TableCell>

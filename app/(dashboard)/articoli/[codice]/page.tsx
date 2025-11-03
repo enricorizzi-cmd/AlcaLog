@@ -17,6 +17,11 @@ type ArticoloWithFornitore = {
   [key: string]: any;
 };
 
+// Type guard per verificare se è un oggetto Fornitore
+function isFornitore(obj: any): obj is Fornitore {
+  return obj && typeof obj === 'object' && 'descrizione' in obj && 'codice' in obj;
+}
+
 export default function ArticoloDettaglioPage() {
   const params = useParams();
   const codice = params.codice as string;
@@ -283,7 +288,7 @@ export default function ArticoloDettaglioPage() {
             {articolo.fornitore_predefinito && (
               <div>
                 <span className="font-medium">Fornitore Predefinito:</span>{' '}
-                {typeof articolo.fornitore_predefinito === 'object' && articolo.fornitore_predefinito
+                {isFornitore(articolo.fornitore_predefinito)
                   ? articolo.fornitore_predefinito.descrizione
                   : articolo.fornitore_predefinito}
               </div>
