@@ -148,7 +148,10 @@ export default function NuovoArticoloPage() {
 
               <div className="space-y-2">
                 <label className="text-sm font-medium">Fornitore Predefinito</label>
-                <Select value={formData.fornitore_predefinito} onValueChange={(v) => setFormData({ ...formData, fornitore_predefinito: v })}>
+                <Select 
+                  value={formData.fornitore_predefinito || 'none'} 
+                  onValueChange={(v) => setFormData({ ...formData, fornitore_predefinito: v === 'none' ? '' : v })}
+                >
                   <SelectTrigger>
                     <SelectValue placeholder="Seleziona Fornitore" />
                   </SelectTrigger>
