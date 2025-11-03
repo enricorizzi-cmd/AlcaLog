@@ -34,70 +34,99 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    // Usa client Supabase diretto per evitare problemi SSR
+    // Usa client Supabase diretto con configurazione per retry e timeout
     const supabase = createClient(
       supabaseUrl,
       process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
       {
         auth: {
-          persistSession: false, // Non persistiamo sessioni nel server
+          persistSession: false,
           autoRefreshToken: false,
+        },
+        global: {
+          fetch: (url, options = {}) => {
+            return fetch(url, {
+              ...options,
+              // Timeout più lungo per Render
+              signal: AbortSignal.timeout ? AbortSignal.timeout(30000) : undefined,
+            });
+          },
         },
       }
     );
 
-    try {
-      const { data, error } = await supabase.auth.signInWithPassword({
-        email,
-        password,
-      });
-
-      if (error) {
-        console.error('Errore Supabase auth:', {
-          message: error.message,
-          status: error.status,
-          name: error.name,
-          url: supabaseUrl,
+    // Retry mechanism per connessioni instabili
+    let lastError;
+    for (let attempt = 0; attempt < 3; attempt++) {
+      try {
+        const { data, error } = await supabase.auth.signInWithPassword({
+          email,
+          password,
         });
-        
-        // Gestione specifica per "fetch failed" - problema di connettività
-        if (error.message?.includes('fetch failed') || 
-            error.message?.includes('Failed to fetch') ||
-            error.message?.includes('NetworkError') ||
-            error.message?.includes('Network request failed')) {
-          console.error('Errore di rete Supabase:', {
-            url: supabaseUrl,
-            error: error.message,
+
+        if (error) {
+          lastError = error;
+          // Se non è un errore di rete, non riprovare
+          if (!error.message?.includes('fetch failed') && 
+              !error.message?.includes('Failed to fetch') &&
+              !error.message?.includes('NetworkError')) {
+            break;
+          }
+          // Se è un errore di rete e non è l'ultimo tentativo, aspetta e riprova
+          if (attempt < 2) {
+            await new Promise(resolve => setTimeout(resolve, 1000 * (attempt + 1)));
+            continue;
+          }
+        } else {
+          // Successo!
+          return NextResponse.json({
+            user: data.user,
+            session: data.session,
           });
-          return NextResponse.json(
-            { 
-              error: 'Errore di connessione al server di autenticazione. Verifica la configurazione e la connettività.',
-              details: process.env.NODE_ENV === 'development' ? error.message : undefined
-            },
-            { status: 503 }
-          );
         }
-        
-        // Altri errori di autenticazione
+      } catch (err) {
+        lastError = err;
+        if (attempt < 2) {
+          await new Promise(resolve => setTimeout(resolve, 1000 * (attempt + 1)));
+          continue;
+        }
+      }
+    }
+
+    // Se arriviamo qui, tutti i tentativi sono falliti
+    const error = lastError;
+
+    // Gestione errori dopo tutti i tentativi
+    if (error) {
+      console.error('Errore Supabase auth dopo retry:', {
+        message: error.message,
+        status: error.status,
+        name: error.name,
+        url: supabaseUrl,
+      });
+      
+      // Gestione specifica per "fetch failed" - problema di connettività
+      if (error.message?.includes('fetch failed') || 
+          error.message?.includes('Failed to fetch') ||
+          error.message?.includes('NetworkError') ||
+          error.message?.includes('Network request failed')) {
+        console.error('Errore di rete Supabase:', {
+          url: supabaseUrl,
+          error: error.message,
+        });
         return NextResponse.json(
-          { error: error.message || 'Credenziali non valide' },
-          { status: 401 }
+          { 
+            error: 'Errore di connessione al server di autenticazione. Verifica la configurazione e la connettività.',
+            details: process.env.NODE_ENV === 'development' ? error.message : undefined
+          },
+          { status: 503 }
         );
       }
-
-      return NextResponse.json({
-        user: data.user,
-        session: data.session,
-      });
-    } catch (err) {
-      console.error('Errore durante login:', err);
-      const errorMessage = err instanceof Error ? err.message : 'Errore sconosciuto';
+      
+      // Altri errori di autenticazione
       return NextResponse.json(
-        { 
-          error: 'Errore interno durante l\'autenticazione',
-          details: process.env.NODE_ENV === 'development' ? errorMessage : undefined
-        },
-        { status: 500 }
+        { error: error.message || 'Credenziali non valide' },
+        { status: 401 }
       );
     }
   } catch (error) {
