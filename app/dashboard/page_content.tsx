@@ -2,7 +2,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/com
 import Link from 'next/link';
 import { Button } from '@/components/ui/button';
 
-export default function DashboardPage() {
+export default function DashboardPageContent() {
   return (
     <div className="space-y-8">
       <div>
@@ -170,3 +170,4 @@ export default function DashboardPage() {
     </div>
   );
 }
+
