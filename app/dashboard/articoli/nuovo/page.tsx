@@ -47,6 +47,12 @@ export default function NuovoArticoloPage() {
     e.preventDefault();
     setSubmitting(true);
     setError(null);
+    
+    // Converti "none" in null per fornitore_predefinito
+    const submitData = {
+      ...formData,
+      fornitore_predefinito: formData.fornitore_predefinito === 'none' ? null : formData.fornitore_predefinito || null,
+    };
 
     if (!formData.codice_interno || !formData.descrizione) {
       setError('Codice interno e descrizione sono obbligatori');
@@ -58,7 +64,7 @@ export default function NuovoArticoloPage() {
       const response = await fetch('/api/articoli', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(formData),
+        body: JSON.stringify(submitData),
       });
 
       const data = await response.json();
@@ -147,7 +153,7 @@ export default function NuovoArticoloPage() {
                     <SelectValue placeholder="Seleziona Fornitore" />
                   </SelectTrigger>
                   <SelectContent>
-                    <SelectItem value="">Nessuno</SelectItem>
+                    <SelectItem value="none">Nessuno</SelectItem>
                     {fornitori.map((f) => (
                       <SelectItem key={f.codice} value={f.codice}>
                         {f.descrizione}

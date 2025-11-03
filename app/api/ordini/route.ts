@@ -13,7 +13,7 @@ export async function GET(request: NextRequest) {
 
     let query = supabase
       .from('ordini_fornitori')
-      .select('*, fornitore_movimento:fornitori(*)')
+      .select('*, fornitori:fornitore_movimento(*)')
       .order('data_ordine', { ascending: false });
 
     // Filtri
