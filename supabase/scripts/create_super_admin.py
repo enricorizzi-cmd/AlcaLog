@@ -9,15 +9,17 @@ import sys
 import requests
 from urllib.parse import urljoin
 
-# Configurazione
-SUPABASE_URL = os.getenv(
-    'SUPABASE_URL',
-    'https://sycqyblsvepbyywveokap.supabase.co'
-)
-SERVICE_ROLE_KEY = os.getenv(
-    'SUPABASE_SERVICE_ROLE_KEY',
-    'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InN5Y3F5YmxzdmVwYnl5d2Vva2FwIiwicm9sZSI6InNlcnZpY2Vfcm9sZSIsImlhdCI6MTc2MjE3MTkxMiwiZXhwIjoyMDc3NzQ3OTEyfQ.x_2Y0dkEQ_-BJTjFHyG1Pufoev6M4AVyu-R-GInYZOE'
-)
+# ⚠️ IMPORTANTE: Configura queste variabili d'ambiente prima di eseguire lo script
+# export SUPABASE_URL="https://tuo_project_id.supabase.co"
+# export SUPABASE_SERVICE_ROLE_KEY="tua_service_role_key"
+SUPABASE_URL = os.getenv('SUPABASE_URL')
+SERVICE_ROLE_KEY = os.getenv('SUPABASE_SERVICE_ROLE_KEY')
+
+if not SUPABASE_URL or not SERVICE_ROLE_KEY:
+    print("❌ Errore: Configura le variabili d'ambiente SUPABASE_URL e SUPABASE_SERVICE_ROLE_KEY")
+    print("   export SUPABASE_URL='https://tuo_project_id.supabase.co'")
+    print("   export SUPABASE_SERVICE_ROLE_KEY='tua_service_role_key'")
+    sys.exit(1)
 
 USER_EMAIL = 'enricorizzi1991@gmail.com'
 USER_PASSWORD = 'Enri124578!'
