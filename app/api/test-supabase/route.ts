@@ -15,15 +15,26 @@ export async function GET() {
 
     // Test connessione diretta a Supabase
     const testUrl = `${supabaseUrl}/rest/v1/`;
-    const response = await fetch(testUrl, {
-      method: 'GET',
-      headers: {
-        'apikey': supabaseKey,
-        'Authorization': `Bearer ${supabaseKey}`,
-      },
-      // Timeout di 10 secondi
-      signal: AbortSignal.timeout(10000),
-    });
+    
+    // Timeout manuale per compatibilità con Node.js
+    const controller = new AbortController();
+    const timeoutId = setTimeout(() => controller.abort(), 10000);
+    
+    let response;
+    try {
+      response = await fetch(testUrl, {
+        method: 'GET',
+        headers: {
+          'apikey': supabaseKey,
+          'Authorization': `Bearer ${supabaseKey}`,
+        },
+        signal: controller.signal,
+      });
+      clearTimeout(timeoutId);
+    } catch (fetchError) {
+      clearTimeout(timeoutId);
+      throw fetchError;
+    }
 
     return NextResponse.json({
       success: true,
