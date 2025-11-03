@@ -20,13 +20,13 @@ export async function generateBatchId(): Promise<string> {
     .from('articoli_lotti')
     .select('lotto_interno')
     .order('lotto_interno', { ascending: false })
-    .limit(1)
-    .single();
+    .limit(1);
 
   let nextNumber = 1;
   
-  if (data && !error) {
-    nextNumber = (data.lotto_interno || 0) + 1;
+  // Se ci sono record, usa il più alto + 1, altrimenti inizia da 1
+  if (data && data.length > 0 && !error) {
+    nextNumber = (data[0].lotto_interno || 0) + 1;
   }
 
   // Formatta come ALCA + numero a 6 cifre (es: ALCA000001)

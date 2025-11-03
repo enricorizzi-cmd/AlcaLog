@@ -18,13 +18,14 @@ export async function GET(
       .order('scadenza', { ascending: true });
 
     if (error) {
+      console.error('Errore recupero lotti:', error);
       return NextResponse.json(
         { error: error.message },
         { status: 400 }
       );
     }
 
-    return NextResponse.json(data);
+    return NextResponse.json(data || []);
   } catch (error) {
     console.error('Errore recupero lotti:', error);
     return NextResponse.json(
@@ -78,6 +79,7 @@ export async function POST(
       .single();
 
     if (lottoError) {
+      console.error('Errore creazione lotto:', lottoError);
       // Errore unicità (articolo, lotto_fornitore, scadenza)
       if (lottoError.code === '23505') {
         return NextResponse.json(
@@ -85,8 +87,15 @@ export async function POST(
           { status: 409 }
         );
       }
+      // Errore RLS
+      if (lottoError.message?.includes('row-level security')) {
+        return NextResponse.json(
+          { error: 'Errore permessi: esegui la migrazione RLS in Supabase (20240102000000_add_insert_update_policies.sql)' },
+          { status: 403 }
+        );
+      }
       return NextResponse.json(
-        { error: lottoError.message },
+        { error: lottoError.message || 'Errore nella creazione del lotto' },
         { status: 400 }
       );
     }
