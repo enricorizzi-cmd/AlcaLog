@@ -8,9 +8,18 @@
 
 import https from 'https';
 
-const RENDER_API_KEY = 'rnd_lNGvDoYk5oA3RD6TijljFEo5CLPK';
+// ⚠️ IMPORTANTE: Configura le tue credenziali come variabili d'ambiente
+// Usa: export RENDER_API_KEY="tuo_api_key_qui" prima di eseguire lo script
+const RENDER_API_KEY = process.env.RENDER_API_KEY || process.env.RND_API_KEY;
+
+if (!RENDER_API_KEY) {
+  console.error('❌ Errore: RENDER_API_KEY non trovata nelle variabili d\'ambiente');
+  console.error('   Configura: export RENDER_API_KEY="tuo_api_key"');
+  process.exit(1);
+}
 
 // Configurazione servizio
+// ⚠️ IMPORTANTE: Sostituisci i valori con i tuoi dati reali o usa variabili d'ambiente
 const CONFIG = {
   name: 'alcalog-platform',
   planId: 'starter', // 'starter' = free tier
@@ -21,10 +30,10 @@ const CONFIG = {
   startCommand: 'npm start',
   autoDeploy: true,
   envVars: [
-    { key: 'NEXT_PUBLIC_SUPABASE_URL', value: 'https://sycqyblsvepbyywveokap.supabase.co' },
-    { key: 'NEXT_PUBLIC_SUPABASE_ANON_KEY', value: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InN5Y3F5YmxzdmVwYnl5d2Vva2FwIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjIxNzE5MTIsImV4cCI6MjA3Nzc0NzkxMn0.hyQczn__Cl5UvAJBSeht1QT2ShQAofqjpUEEOJFlujE' },
-    { key: 'SUPABASE_SERVICE_ROLE_KEY', value: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InN5Y3F5YmxzdmVwYnl5d2Vva2FwIiwicm9sZSI6InNlcnZpY2Vfcm9sZSIsImlhdCI6MTc2MjE3MTkxMiwiZXhwIjoyMDc3NzQ3OTEyfQ.x_2Y0dkEQ_-BJTjFHyG1Pufoev6M4AVyu-R-GInYZOE' },
-    { key: 'RESEND_API_KEY', value: 're_FXv8pFpX_3vjQBUcBvmPnkp8Ce5tss44d' },
+    { key: 'NEXT_PUBLIC_SUPABASE_URL', value: process.env.NEXT_PUBLIC_SUPABASE_URL || 'TUO_SUPABASE_URL_QUI' },
+    { key: 'NEXT_PUBLIC_SUPABASE_ANON_KEY', value: process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY || 'TUO_ANON_KEY_QUI' },
+    { key: 'SUPABASE_SERVICE_ROLE_KEY', value: process.env.SUPABASE_SERVICE_ROLE_KEY || 'TUO_SERVICE_ROLE_KEY_QUI' },
+    { key: 'RESEND_API_KEY', value: process.env.RESEND_API_KEY || 'TUO_RESEND_KEY_QUI' },
     { key: 'NODE_ENV', value: 'production' }
   ]
 };

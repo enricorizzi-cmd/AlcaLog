@@ -11,7 +11,7 @@ Configura queste variabili d'ambiente nel tuo servizio Render (Settings → Envi
 ### 1. Database Supabase
 
 ```env
-NEXT_PUBLIC_SUPABASE_URL=https://sycqyblsvepbyywveokap.supabase.co
+NEXT_PUBLIC_SUPABASE_URL=https://TUO_PROJECT_ID.supabase.co
 ```
 
 **Descrizione**: URL del progetto Supabase  
@@ -21,7 +21,7 @@ NEXT_PUBLIC_SUPABASE_URL=https://sycqyblsvepbyywveokap.supabase.co
 ---
 
 ```env
-NEXT_PUBLIC_SUPABASE_ANON_KEY=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InN5Y3F5YmxzdmVwYnl5d2Vva2FwIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjIxNzE5MTIsImV4cCI6MjA3Nzc0NzkxMn0.hyQczn__Cl5UvAJBSeht1QT2ShQAofqjpUEEOJFlujE
+NEXT_PUBLIC_SUPABASE_ANON_KEY=TUO_ANON_KEY_QUI
 ```
 
 **Descrizione**: Chiave pubblica anonima Supabase (per operazioni client-side)  
@@ -31,7 +31,7 @@ NEXT_PUBLIC_SUPABASE_ANON_KEY=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzd
 ---
 
 ```env
-SUPABASE_SERVICE_ROLE_KEY=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InN5Y3F5YmxzdmVwYnl5d2Vva2FwIiwicm9sZSI6InNlcnZpY2Vfcm9sZSIsImlhdCI6MTc2MjE3MTkxMiwiZXhwIjoyMDc3NzQ3OTEyfQ.x_2Y0dkEQ_-BJTjFHyG1Pufoev6M4AVyu-R-GInYZOE
+SUPABASE_SERVICE_ROLE_KEY=TUO_SERVICE_ROLE_KEY_QUI
 ```
 
 **Descrizione**: Chiave service role Supabase (per operazioni server-side privilegiate)  
@@ -44,7 +44,7 @@ SUPABASE_SERVICE_ROLE_KEY=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhY
 ### 2. Email (Resend API)
 
 ```env
-RESEND_API_KEY=re_FXv8pFpX_3vjQBUcBvmPnkp8Ce5tss44d
+RESEND_API_KEY=TUO_RESEND_API_KEY_QUI
 ```
 
 **Descrizione**: API Key per invio email (recupero password)  
@@ -197,12 +197,14 @@ Prima di considerare il servizio configurato:
 Se preferisci copiare tutto insieme, ecco le variabili pronte:
 
 ```env
-NEXT_PUBLIC_SUPABASE_URL=https://sycqyblsvepbyywveokap.supabase.co
-NEXT_PUBLIC_SUPABASE_ANON_KEY=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InN5Y3F5YmxzdmVwYnl5d2Vva2FwIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjIxNzE5MTIsImV4cCI6MjA3Nzc0NzkxMn0.hyQczn__Cl5UvAJBSeht1QT2ShQAofqjpUEEOJFlujE
-SUPABASE_SERVICE_ROLE_KEY=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InN5Y3F5YmxzdmVwYnl5d2Vva2FwIiwicm9sZSI6InNlcnZpY2Vfcm9sZSIsImlhdCI6MTc2MjE3MTkxMiwiZXhwIjoyMDc3NzQ3OTEyfQ.x_2Y0dkEQ_-BJTjFHyG1Pufoev6M4AVyu-R-GInYZOE
-RESEND_API_KEY=re_FXv8pFpX_3vjQBUcBvmPnkp8Ce5tss44d
+NEXT_PUBLIC_SUPABASE_URL=https://TUO_PROJECT_ID.supabase.co
+NEXT_PUBLIC_SUPABASE_ANON_KEY=TUO_ANON_KEY_QUI
+SUPABASE_SERVICE_ROLE_KEY=TUO_SERVICE_ROLE_KEY_QUI
+RESEND_API_KEY=TUO_RESEND_API_KEY_QUI
 NODE_ENV=production
 ```
+
+**⚠️ IMPORTANTE**: Sostituisci i placeholder con i tuoi valori reali ottenuti dai rispettivi dashboard!
 
 **Nota**: Su Render devi aggiungere ogni variabile separatamente nell'interfaccia web.
 

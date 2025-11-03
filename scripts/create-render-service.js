@@ -5,10 +5,19 @@
 
 const https = require('https');
 
-const RENDER_API_KEY = 'rnd_lNGvDoYk5oA3RD6TijljFEo5CLPK';
-const GITHUB_REPO = process.env.GITHUB_REPO || 'TUO_USERNAME/alcalog-platform'; // Da sostituire
+// ⚠️ IMPORTANTE: Usa variabili d'ambiente per le credenziali
+// export RENDER_API_KEY="tuo_api_key" prima di eseguire lo script
+const RENDER_API_KEY = process.env.RENDER_API_KEY || process.env.RND_API_KEY;
+const GITHUB_REPO = process.env.GITHUB_REPO || 'TUO_USERNAME/alcalog-platform';
 const SERVICE_NAME = 'alcalog-platform';
 
+if (!RENDER_API_KEY) {
+  console.error('❌ Errore: RENDER_API_KEY non trovata nelle variabili d\'ambiente');
+  console.error('   Configura: export RENDER_API_KEY="tuo_api_key"');
+  process.exit(1);
+}
+
+// ⚠️ IMPORTANTE: Usa variabili d'ambiente o sostituisci con i tuoi valori reali
 const config = {
   name: SERVICE_NAME,
   type: 'web_service',
@@ -21,19 +30,19 @@ const config = {
   envVars: [
     {
       key: 'NEXT_PUBLIC_SUPABASE_URL',
-      value: 'https://sycqyblsvepbyywveokap.supabase.co'
+      value: process.env.NEXT_PUBLIC_SUPABASE_URL || 'TUO_SUPABASE_URL_QUI'
     },
     {
       key: 'NEXT_PUBLIC_SUPABASE_ANON_KEY',
-      value: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InN5Y3F5YmxzdmVwYnl5d2Vva2FwIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjIxNzE5MTIsImV4cCI6MjA3Nzc0NzkxMn0.hyQczn__Cl5UvAJBSeht1QT2ShQAofqjpUEEOJFlujE'
+      value: process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY || 'TUO_ANON_KEY_QUI'
     },
     {
       key: 'SUPABASE_SERVICE_ROLE_KEY',
-      value: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InN5Y3F5YmxzdmVwYnl5d2Vva2FwIiwicm9sZSI6InNlcnZpY2Vfcm9sZSIsImlhdCI6MTc2MjE3MTkxMiwiZXhwIjoyMDc3NzQ3OTEyfQ.x_2Y0dkEQ_-BJTjFHyG1Pufoev6M4AVyu-R-GInYZOE'
+      value: process.env.SUPABASE_SERVICE_ROLE_KEY || 'TUO_SERVICE_ROLE_KEY_QUI'
     },
     {
       key: 'RESEND_API_KEY',
-      value: 're_FXv8pFpX_3vjQBUcBvmPnkp8Ce5tss44d'
+      value: process.env.RESEND_API_KEY || 'TUO_RESEND_KEY_QUI'
     },
     {
       key: 'NODE_ENV',

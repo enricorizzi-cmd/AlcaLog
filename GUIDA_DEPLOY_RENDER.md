@@ -14,7 +14,7 @@
 ### 1.1 Esegui Migrazione Database
 
 1. Accedi a **Supabase Dashboard**: https://supabase.com/dashboard
-2. Seleziona il progetto: `sycqyblsvepbyywveokap`
+2. Seleziona il tuo progetto Supabase
 3. Vai a **SQL Editor** (menu laterale sinistro)
 4. Clicca **New Query**
 5. Apri il file `supabase/migrations/20240101000000_initial_schema.sql` dalla cartella del progetto
@@ -29,7 +29,7 @@
 
 1. Vai a **Settings** → **API** nel dashboard Supabase
 2. Verifica che queste informazioni siano disponibili:
-   - **Project URL**: `https://sycqyblsvepbyywveokap.supabase.co`
+   - **Project URL**: `https://TUO_PROJECT_ID.supabase.co`
    - **anon public key**: (dovrebbe essere quella già configurata)
    - **service_role key**: (per operazioni server-side)
 
@@ -147,12 +147,14 @@ Per iniziare, puoi scegliere **Free** e passare a Starter dopo.
 Clicca su **Advanced** → **Environment Variables** e aggiungi:
 
 ```env
-NEXT_PUBLIC_SUPABASE_URL=https://sycqyblsvepbyywveokap.supabase.co
-NEXT_PUBLIC_SUPABASE_ANON_KEY=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InN5Y3F5YmxzdmVwYnl5d2Vva2FwIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjIxNzE5MTIsImV4cCI6MjA3Nzc0NzkxMn0.hyQczn__Cl5UvAJBSeht1QT2ShQAofqjpUEEOJFlujE
-SUPABASE_SERVICE_ROLE_KEY=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InN5Y3F5YmxzdmVwYnl5d2Vva2FwIiwicm9sZSI6InNlcnZpY2Vfcm9sZSIsImlhdCI6MTc2MjE3MTkxMiwiZXhwIjoyMDc3NzQ3OTEyfQ.x_2Y0dkEQ_-BJTjFHyG1Pufoev6M4AVyu-R-GInYZOE
-RESEND_API_KEY=re_FXv8pFpX_3vjQBUcBvmPnkp8Ce5tss44d
+NEXT_PUBLIC_SUPABASE_URL=https://TUO_PROJECT_ID.supabase.co
+NEXT_PUBLIC_SUPABASE_ANON_KEY=TUO_ANON_KEY_QUI
+SUPABASE_SERVICE_ROLE_KEY=TUO_SERVICE_ROLE_KEY_QUI
+RESEND_API_KEY=TUO_RESEND_API_KEY_QUI
 NODE_ENV=production
 ```
+
+**⚠️ IMPORTANTE**: Sostituisci i placeholder con i tuoi valori reali ottenuti dai rispettivi dashboard!
 
 **Come aggiungere ogni variabile:**
 1. Campo **Key**: Inserisci il nome (es: `NEXT_PUBLIC_SUPABASE_URL`)

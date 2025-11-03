@@ -5,7 +5,7 @@
 ### 1. Esegui Migrazione Database
 
 1. Accedi a https://supabase.com/dashboard
-2. Seleziona il progetto: `sycqyblsvepbyywveokap`
+2. Seleziona il tuo progetto Supabase
 3. Vai a **SQL Editor**
 4. Copia il contenuto del file `supabase/migrations/20240101000000_initial_schema.sql`
 5. Esegui lo script completo
@@ -49,13 +49,17 @@ Le policies base sono già incluse nella migrazione. Per sicurezza aggiuntiva, p
 Aggiungi queste variabili nell'interfaccia Render:
 
 ```
-NEXT_PUBLIC_SUPABASE_URL=https://sycqyblsvepbyywveokap.supabase.co
-NEXT_PUBLIC_SUPABASE_ANON_KEY=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InN5Y3F5YmxzdmVwYnl5d2Vva2FwIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjIxNzE5MTIsImV4cCI6MjA3Nzc0NzkxMn0.hyQczn__Cl5UvAJBSeht1QT2ShQAofqjpUEEOJFlujE
-SUPABASE_SERVICE_ROLE_KEY=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InN5Y3F5YmxzdmVwYnl5d2Vva2FwIiwicm9sZSI6InNlcnZpY2Vfcm9sZSIsImlhdCI6MTc2MjE3MTkxMiwiZXhwIjoyMDc3NzQ3OTEyfQ.x_2Y0dkEQ_-BJTjFHyG1Pufoev6M4AVyu-R-GInYZOE
-RESEND_API_KEY=re_FXv8pFpX_3vjQBUcBvmPnkp8Ce5tss44d
-RENDER_API_KEY=rnd_lNGvDoYk5oA3RD6TijljFEo5CLPK
+NEXT_PUBLIC_SUPABASE_URL=https://TUO_PROJECT_ID.supabase.co
+NEXT_PUBLIC_SUPABASE_ANON_KEY=TUO_ANON_KEY_QUI
+SUPABASE_SERVICE_ROLE_KEY=TUO_SERVICE_ROLE_KEY_QUI
+RESEND_API_KEY=TUO_RESEND_API_KEY_QUI
 NODE_ENV=production
 ```
+
+**⚠️ IMPORTANTE**: 
+- Sostituisci tutti i placeholder con i tuoi valori reali
+- Le chiavi si trovano nei rispettivi dashboard (Supabase, Resend)
+- NON committare mai questi valori nel codice!
 
 ### 4. Build Settings
 
