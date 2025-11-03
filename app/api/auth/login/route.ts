@@ -32,8 +32,22 @@ export async function POST(request: NextRequest) {
     });
 
     if (error) {
+      console.error('Errore Supabase auth:', {
+        message: error.message,
+        status: error.status,
+        name: error.name,
+      });
+      
+      // Gestione specifica per "fetch failed" - probabilmente variabili d'ambiente non configurate
+      if (error.message?.includes('fetch failed') || error.message?.includes('Failed to fetch')) {
+        return NextResponse.json(
+          { error: 'Errore di connessione al server di autenticazione. Verifica la configurazione.' },
+          { status: 503 }
+        );
+      }
+      
       return NextResponse.json(
-        { error: error.message },
+        { error: error.message || 'Credenziali non valide' },
         { status: 401 }
       );
     }
