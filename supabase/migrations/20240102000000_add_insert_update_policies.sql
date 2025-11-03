@@ -2,6 +2,7 @@
 -- MIGRAZIONE: Policy RLS per INSERT/UPDATE/DELETE
 -- Aggiunge policy per permettere operazioni CRUD agli utenti autenticati
 -- ============================================
+-- NOTA: Questa migrazione aggiunge anche policy SELECT mancanti per alcune tabelle
 
 -- Policy per FORNITORI
 CREATE POLICY "Utenti autenticati possono inserire fornitori" ON fornitori
@@ -54,6 +55,9 @@ CREATE POLICY "Utenti autenticati possono eliminare permessi" ON ruoli_tab_abili
     FOR DELETE USING (auth.role() = 'authenticated');
 
 -- Policy per ARTICOLI LOTTI
+CREATE POLICY "Utenti autenticati possono leggere lotti" ON articoli_lotti
+    FOR SELECT USING (auth.role() = 'authenticated');
+
 CREATE POLICY "Utenti autenticati possono inserire lotti" ON articoli_lotti
     FOR INSERT WITH CHECK (auth.role() = 'authenticated');
 
