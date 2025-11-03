@@ -10,6 +10,12 @@ import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, Di
 import { Alert, AlertDescription } from '@/components/ui/alert';
 import Link from 'next/link';
 import { Badge } from '@/components/ui/badge';
+import type { Fornitore } from '@/types/database';
+
+type ArticoloWithFornitore = {
+  fornitore_predefinito?: string | Fornitore | null;
+  [key: string]: any;
+};
 
 export default function ArticoloDettaglioPage() {
   const params = useParams();
@@ -276,7 +282,10 @@ export default function ArticoloDettaglioPage() {
             )}
             {articolo.fornitore_predefinito && (
               <div>
-                <span className="font-medium">Fornitore Predefinito:</span> {articolo.fornitore_predefinito.descrizione}
+                <span className="font-medium">Fornitore Predefinito:</span>{' '}
+                {typeof articolo.fornitore_predefinito === 'object' && articolo.fornitore_predefinito
+                  ? articolo.fornitore_predefinito.descrizione
+                  : articolo.fornitore_predefinito}
               </div>
             )}
           </CardContent>

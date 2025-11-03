@@ -10,9 +10,14 @@ import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, Di
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import Link from 'next/link';
 import type { Articolo } from '@/types/database';
+import type { Fornitore } from '@/types/database';
+
+type ArticoloWithFornitore = Articolo & {
+  fornitore_predefinito?: string | Fornitore | null;
+};
 
 export default function ArticoliPage() {
-  const [articoli, setArticoli] = useState<Articolo[]>([]);
+  const [articoli, setArticoli] = useState<ArticoloWithFornitore[]>([]);
   const [loading, setLoading] = useState(true);
   const [searchTerm, setSearchTerm] = useState('');
   const [filtroTipologia, setFiltroTipologia] = useState<string>('all');
@@ -141,8 +146,12 @@ export default function ArticoliPage() {
                         )}
                       </TableCell>
                       <TableCell>{articolo.unita_misura || '-'}</TableCell>
-                      <TableCell>{articolo.fornitore_predefinito?.descrizione || '-'}</TableCell>
-                      <TableCell>{articolo.scorta_minima || '-'}</TableCell>
+                      <TableCell>
+                        {typeof articolo.fornitore_predefinito === 'object' && articolo.fornitore_predefinito
+                          ? articolo.fornitore_predefinito.descrizione
+                          : articolo.fornitore_predefinito || '-'}
+                      </TableCell>
+                      <TableCell>{articolo.scorta_minima?.toFixed(4) || '-'}</TableCell>
                       <TableCell>
                         <Link href={`/dashboard/articoli/${articolo.codice_interno}`}>
                           <Button variant="outline" size="sm">
