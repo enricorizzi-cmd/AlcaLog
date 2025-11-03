@@ -1,5 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { createClient } from '@supabase/supabase-js';
+import { createServerClient } from '@supabase/ssr';
+import { cookies } from 'next/headers';
 
 export async function POST(request: NextRequest) {
   try {
@@ -85,10 +87,48 @@ export async function POST(request: NextRequest) {
           }
         } else {
           // Successo!
-          return NextResponse.json({
-            user: data.user,
-            session: data.session,
-          });
+      // Salva la sessione nei cookie usando Supabase SSR
+      const cookieStore = await cookies();
+      const supabaseSSR = createServerClient(
+        supabaseUrl,
+        supabaseKey,
+        {
+          cookies: {
+            getAll() {
+              return cookieStore.getAll();
+            },
+            setAll(cookiesToSet) {
+              cookiesToSet.forEach(({ name, value, options }) => {
+                cookieStore.set(name, value, options);
+              });
+            },
+          },
+        }
+      );
+
+      // Imposta la sessione nel client SSR
+      await supabaseSSR.auth.setSession({
+        access_token: data.session.access_token,
+        refresh_token: data.session.refresh_token,
+      });
+
+      // Crea la risposta con i cookie aggiornati
+      const response = NextResponse.json({
+        user: data.user,
+        session: data.session,
+      });
+
+      // Copia i cookie dalla cookieStore alla risposta
+      cookieStore.getAll().forEach((cookie) => {
+        response.cookies.set(cookie.name, cookie.value, {
+          httpOnly: true,
+          secure: process.env.NODE_ENV === 'production',
+          sameSite: 'lax',
+          path: '/',
+        });
+      });
+
+      return response;
         }
       } catch (err) {
         lastError = err;
