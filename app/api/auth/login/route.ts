@@ -90,11 +90,6 @@ export async function POST(request: NextRequest) {
         { status: 500 }
       );
     }
-
-    return NextResponse.json({
-      user: data.user,
-      session: data.session,
-    });
   } catch (error) {
     console.error('Errore login:', error);
     return NextResponse.json(
