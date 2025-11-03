@@ -4,7 +4,7 @@ import withPWA from "next-pwa";
 const nextConfig: NextConfig = {
   reactStrictMode: true,
   // Ottimizzazioni per build più veloce
-  swcMinify: true,
+  // swcMinify è abilitato di default in Next.js 16, rimuoviamo la configurazione esplicita
   compiler: {
     removeConsole: process.env.NODE_ENV === "production" ? {
       exclude: ["error", "warn"],
