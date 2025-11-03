@@ -104,26 +104,31 @@ export async function POST(request: NextRequest) {
 
     // Gestione errori dopo tutti i tentativi
     if (error) {
+      // Type guard per errori Supabase
+      const errorMessage = (error as any)?.message || (error instanceof Error ? error.message : 'Errore sconosciuto');
+      const errorStatus = (error as any)?.status;
+      const errorName = (error as any)?.name || (error instanceof Error ? error.name : 'Unknown');
+
       console.error('Errore Supabase auth dopo retry:', {
-        message: error.message,
-        status: error.status,
-        name: error.name,
+        message: errorMessage,
+        status: errorStatus,
+        name: errorName,
         url: supabaseUrl,
       });
       
       // Gestione specifica per "fetch failed" - problema di connettività
-      if (error.message?.includes('fetch failed') || 
-          error.message?.includes('Failed to fetch') ||
-          error.message?.includes('NetworkError') ||
-          error.message?.includes('Network request failed')) {
+      if (errorMessage?.includes('fetch failed') || 
+          errorMessage?.includes('Failed to fetch') ||
+          errorMessage?.includes('NetworkError') ||
+          errorMessage?.includes('Network request failed')) {
         console.error('Errore di rete Supabase:', {
           url: supabaseUrl,
-          error: error.message,
+          error: errorMessage,
         });
         return NextResponse.json(
           { 
             error: 'Errore di connessione al server di autenticazione. Verifica la configurazione e la connettività.',
-            details: process.env.NODE_ENV === 'development' ? error.message : undefined
+            details: process.env.NODE_ENV === 'development' ? errorMessage : undefined
           },
           { status: 503 }
         );
@@ -131,7 +136,7 @@ export async function POST(request: NextRequest) {
       
       // Altri errori di autenticazione
       return NextResponse.json(
-        { error: error.message || 'Credenziali non valide' },
+        { error: errorMessage || 'Credenziali non valide' },
         { status: 401 }
       );
     }
