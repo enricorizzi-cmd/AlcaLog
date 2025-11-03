@@ -1,5 +1,45 @@
 # Creazione Utente Super Admin
 
+## ⚠️ IMPORTANTE: Ordine di Esecuzione
+
+**PRIMA** devi eseguire la migrazione completa del database, **POI** puoi creare l'utente.
+
+### Opzione A: Migrazione Completa + Utente (CONSIGLIATO)
+
+1. **Passo 1**: Esegui la migrazione completa del database
+   - Vai su Supabase Dashboard > **SQL Editor**
+   - Esegui il file: `supabase/migrations/20240101000000_initial_schema.sql`
+   - Questo crea tutte le tabelle necessarie
+
+2. **Passo 2**: Crea l'utente in Supabase Auth
+   - Vai su **Authentication** > **Users**
+   - Clicca **"Add user"** > **"Create new user"**
+   - Email: `enricorizzi1991@gmail.com`
+   - Password: `Enri124578!`
+   - **Auto Confirm User**: ✅
+
+3. **Passo 3**: Esegui lo script per creare il profilo admin
+   - Vai su **SQL Editor**
+   - Esegui il file: `supabase/scripts/create_super_admin.sql`
+
+### Opzione B: Script Completo (Setup Rapido)
+
+Se le tabelle non esistono ancora, usa lo script completo che crea tutto:
+
+1. **Passo 1**: Crea l'utente in Supabase Auth
+   - Vai su **Authentication** > **Users**
+   - Clicca **"Add user"** > **"Create new user"**
+   - Email: `enricorizzi1991@gmail.com`
+   - Password: `Enri124578!`
+   - **Auto Confirm User**: ✅
+
+2. **Passo 2**: Esegui lo script completo
+   - Vai su **SQL Editor**
+   - Esegui il file: `supabase/scripts/setup_database_e_utente.sql`
+   - Questo crea le tabelle base E l'utente admin in un solo passaggio
+
+---
+
 ## Metodo 1: Via Supabase Dashboard (CONSIGLIATO)
 
 ### Passo 1: Crea l'utente in Supabase Auth
@@ -16,13 +56,17 @@
 
 ### Passo 2: Esegui lo script SQL
 
+**Se le tabelle esistono già** (hai eseguito la migrazione completa):
 1. Vai su **SQL Editor** nel Supabase Dashboard
-2. Apri il file `create_super_admin.sql`
-3. Copia e incolla tutto il contenuto
-4. Clicca **"Run"**
+2. Esegui il file: `create_super_admin.sql`
+
+**Se le tabelle NON esistono** (setup rapido):
+1. Vai su **SQL Editor** nel Supabase Dashboard
+2. Esegui il file: `setup_database_e_utente.sql` (crea tabelle + utente)
 
 Lo script:
 - ✅ Trova automaticamente l'UUID dell'utente per email
+- ✅ Crea le tabelle base se non esistono (solo con setup_database_e_utente.sql)
 - ✅ Crea/verifica il ruolo ADMIN
 - ✅ Crea il profilo utente
 - ✅ Assegna tutti i permessi al ruolo ADMIN
