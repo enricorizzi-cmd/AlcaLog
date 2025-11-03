@@ -31,13 +31,6 @@ const pwaConfig = withPWA({
   skipWaiting: true,
   disable: process.env.NODE_ENV === "development", // Disabilita PWA in sviluppo per debug più veloce
   buildExcludes: [/middleware-manifest\.json$/],
-  // Ottimizzazioni PWA per build più veloce
-  sw: "sw.js",
-  fallbacks: {
-    document: "/offline",
-  },
-  // Disabilita workbox precaching per build più veloce (opzionale)
-  // runtimeCaching: [],
 });
 
 export default pwaConfig(nextConfig);
