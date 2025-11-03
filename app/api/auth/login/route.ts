@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { createClient } from '@/lib/supabase/server';
+import { createClient } from '@supabase/supabase-js';
 
 export async function POST(request: NextRequest) {
   try {
@@ -34,7 +34,17 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    const supabase = await createClient();
+    // Usa client Supabase diretto per evitare problemi SSR
+    const supabase = createClient(
+      supabaseUrl,
+      process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
+      {
+        auth: {
+          persistSession: false, // Non persistiamo sessioni nel server
+          autoRefreshToken: false,
+        },
+      }
+    );
 
     try {
       const { data, error } = await supabase.auth.signInWithPassword({
