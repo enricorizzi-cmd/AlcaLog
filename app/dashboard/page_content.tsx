@@ -16,6 +16,7 @@ import {
   Boxes,
   FileText,
   PackageX,
+  ArrowLeftRight,
 } from 'lucide-react';
 
 interface DashboardStats {
