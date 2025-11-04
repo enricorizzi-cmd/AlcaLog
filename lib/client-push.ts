@@ -63,7 +63,7 @@ export async function subscribeToPushNotifications(): Promise<PushSubscription |
     // Sottoscrivi push
     const subscription = await registration.pushManager.subscribe({
       userVisibleOnly: true,
-      applicationServerKey: urlBase64ToUint8Array(publicKey) as Uint8Array,
+      applicationServerKey: urlBase64ToUint8Array(publicKey),
     });
 
     // Invia subscription al server
@@ -91,10 +91,10 @@ function urlBase64ToUint8Array(base64String: string): Uint8Array {
   const base64 = (base64String + padding).replace(/-/g, '+').replace(/_/g, '/');
 
   const rawData = window.atob(base64);
-  const outputArray = new Uint8Array(base64.length);
+  const outputArray = new Uint8Array(rawData.length);
 
-  for (let i = 0; i < base64.length; ++i) {
-    outputArray[i] = base64.charCodeAt(i);
+  for (let i = 0; i < rawData.length; ++i) {
+    outputArray[i] = rawData.charCodeAt(i);
   }
   return outputArray;
 }
