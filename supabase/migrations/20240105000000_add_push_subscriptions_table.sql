@@ -6,8 +6,11 @@ CREATE TABLE IF NOT EXISTS notifiche_push_subscriptions (
   active BOOLEAN DEFAULT TRUE,
   created_at TIMESTAMP WITH TIME ZONE DEFAULT NOW(),
   updated_at TIMESTAMP WITH TIME ZONE DEFAULT NOW(),
-  UNIQUE(user_id, (subscription->>'endpoint'))
 );
+
+-- Unique constraint su user_id e endpoint usando CREATE UNIQUE INDEX
+CREATE UNIQUE INDEX IF NOT EXISTS idx_push_subscriptions_user_endpoint 
+ON notifiche_push_subscriptions(user_id, (subscription->>'endpoint'));
 
 CREATE INDEX IF NOT EXISTS idx_push_subscriptions_user ON notifiche_push_subscriptions(user_id);
 CREATE INDEX IF NOT EXISTS idx_push_subscriptions_active ON notifiche_push_subscriptions(active) WHERE active = TRUE;
