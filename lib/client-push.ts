@@ -63,7 +63,7 @@ export async function subscribeToPushNotifications(): Promise<PushSubscription |
     // Sottoscrivi push
     const subscription = await registration.pushManager.subscribe({
       userVisibleOnly: true,
-      applicationServerKey: urlBase64ToUint8Array(publicKey),
+      applicationServerKey: urlBase64ToUint8Array(publicKey) as Uint8Array,
     });
 
     // Invia subscription al server
