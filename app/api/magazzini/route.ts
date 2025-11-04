@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { createClient } from '@/lib/supabase/server';
 
-// GET /api/magazzini - Lista ubicazioni magazzino
+// GET /api/magazzini - Lista ubicazioni magazzino (pubblico per registrazione)
 export async function GET(request: NextRequest) {
   try {
     const supabase = await createClient();
@@ -19,7 +19,7 @@ export async function GET(request: NextRequest) {
       );
     }
 
-    return NextResponse.json(data);
+    return NextResponse.json(data || []);
   } catch (error) {
     console.error('Errore recupero magazzini:', error);
     return NextResponse.json(
