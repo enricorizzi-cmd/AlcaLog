@@ -47,7 +47,7 @@ export async function GET() {
         .limit(10),
       supabase
         .from('movimenti_magazzino')
-        .select('*, articolo:articoli(descrizione)')
+        .select('*, articolo_info:articoli(codice, descrizione)')
         .order('data_effettiva', { ascending: false })
         .order('ora_effettiva', { ascending: false })
         .limit(10),

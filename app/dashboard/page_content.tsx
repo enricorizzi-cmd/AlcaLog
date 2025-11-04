@@ -276,7 +276,7 @@ export default function DashboardPageContent() {
                     <div className="flex justify-between items-start">
                       <div>
                         <div className="font-medium">
-                          {movimento.articolo} - {movimento.articolo?.descrizione || '-'}
+                          {movimento.articolo} - {movimento.articolo_info?.descrizione || '-'}
                         </div>
                         <div className="text-sm text-gray-600">
                           {movimento.tipo_movimento} - {movimento.sede}/{movimento.sezione}
@@ -285,7 +285,7 @@ export default function DashboardPageContent() {
                       <div className="text-right">
                         <div className="font-medium">{movimento.quantita}</div>
                         <div className="text-xs text-gray-500">
-                          {new Date(movimento.data_effettiva).toLocaleDateString('it-IT')}
+                          {movimento.data_effettiva ? new Date(movimento.data_effettiva).toLocaleDateString('it-IT') : '-'}
                         </div>
                       </div>
                     </div>
