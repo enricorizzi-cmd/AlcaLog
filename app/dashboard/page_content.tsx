@@ -15,6 +15,7 @@ import {
   AlertTriangle,
   Boxes,
   FileText,
+  PackageX,
 } from 'lucide-react';
 
 interface DashboardStats {
@@ -330,7 +331,7 @@ export default function DashboardPageContent() {
             </Link>
             <Link href="/dashboard/prelievo">
               <Button variant="outline" className="w-full">
-                <PackageSearch className="h-4 w-4 mr-2" />
+                <PackageX className="h-4 w-4 mr-2" />
                 Prelievo
               </Button>
             </Link>
