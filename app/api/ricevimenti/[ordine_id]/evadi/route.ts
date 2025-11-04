@@ -141,7 +141,33 @@ export async function POST(
         });
     }
 
-    // TODO: Trigger notifiche EVASIONE_RICEVIMENTO e CREAZIONE_QR
+    // Trigger notifiche EVASIONE_RICEVIMENTO e CREAZIONE_QR
+    const { triggerNotifiche } = await import('@/lib/notifications-trigger');
+    await triggerNotifiche(
+      'EVASIONE_RICEVIMENTO',
+      `Ordine ${ordine_id} evaso: ${movimentiCreati.length} movimenti, ${lottiCreati.length} lotti creati`,
+      ordine_id,
+      `/dashboard/ordini/${ordine_id}`
+    );
+
+    if (lottiCreati.length > 0) {
+      await triggerNotifiche(
+        'CREAZIONE_QR',
+        `Creati ${lottiCreati.length} nuovi lotti per ordine ${ordine_id}`,
+        ordine_id,
+        `/dashboard/ricevimento`
+      );
+    }
+
+    // Trigger notifiche per righe senza prezzo
+    for (const notifica of notificheDaInviare) {
+      await triggerNotifiche(
+        notifica.evento,
+        notifica.messaggio,
+        notifica.riferimento,
+        `/dashboard/ordini/${ordine_id}`
+      );
+    }
 
     return NextResponse.json({
       success: true,

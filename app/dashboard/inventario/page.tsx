@@ -66,14 +66,16 @@ export default function InventarioPage() {
       if (response.ok) {
         const giacenze = await response.json();
         
-        // Prepara righe inventario
-        const righe = giacenze.map((g: any) => ({
-          articolo: g.articolo,
-          lotto_id: null, // Da completare manualmente
-          unita_misura: null,
-          giacenza_teorica: g.quantita_giacente,
-          conteggio_fisico: null,
-        }));
+        // Prepara righe inventario - per ogni articolo con giacenza > 0
+        const righe = giacenze
+          .filter((g: any) => (g.quantita_giacente || 0) > 0)
+          .map((g: any) => ({
+            articolo: g.articolo,
+            lotto_id: null, // Da selezionare manualmente se necessario
+            unita_misura: g.unita_misura || null,
+            giacenza_teorica: g.quantita_giacente || 0,
+            conteggio_fisico: null,
+          }));
 
         setRigheInventario(righe);
       }

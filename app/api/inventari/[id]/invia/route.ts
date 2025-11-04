@@ -70,7 +70,7 @@ export async function POST(
           lotto_id: riga.lotto_id,
           sede: riga.sede,
           sezione: riga.sezione,
-          quantita: differenza, // Positivo o negativo a seconda della differenza
+          quantita: quantitaMovimento, // Sempre positivo (il tipo_movimento indica direzione)
           data_effettiva: dataEffettiva,
           ora_effettiva: oraEffettiva,
           note_riga: `Rettifica inventario ${inventario.id} - Diff: ${differenza.toFixed(4)}`,
@@ -107,7 +107,14 @@ export async function POST(
       );
     }
 
-    // TODO: Trigger notifica INVENTARIO_INVIATO
+    // Trigger notifica INVENTARIO_INVIATO
+    const { triggerNotifiche } = await import('@/lib/notifications-trigger');
+    await triggerNotifiche(
+      'INVENTARIO_INVIATO',
+      `Inventario ${inventario.id} inviato: ${movimentiCreati.length} movimenti correttivi creati`,
+      inventario.id.toString(),
+      `/dashboard/inventario`
+    );
 
     return NextResponse.json({
       success: true,

@@ -161,7 +161,14 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    // TODO: Trigger notifica CREAZIONE_ORDINE
+    // Trigger notifica CREAZIONE_ORDINE
+    const { triggerNotifiche } = await import('@/lib/notifications-trigger');
+    await triggerNotifiche(
+      'CREAZIONE_ORDINE',
+      `Nuovo ordine creato: ${testata.numero_ordine || ordine.id}`,
+      ordine.id.toString(),
+      `/dashboard/ordini/${ordine.id}`
+    );
 
     // Recupera ordine completo
     const { data: ordineCompleto } = await supabase

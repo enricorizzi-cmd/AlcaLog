@@ -34,7 +34,7 @@ export async function updateSession(request: NextRequest) {
   } = await supabase.auth.getUser();
 
   // Permetti accesso a login e route pubbliche senza autenticazione
-  const publicPaths = ['/login', '/_next', '/api/auth/login', '/api/auth/reset-password', '/api/health', '/api/test-supabase'];
+        const publicPaths = ['/login', '/registrazione', '/_next', '/api/auth/login', '/api/auth/registrazione', '/api/auth/reset-password', '/api/health', '/api/test-supabase'];
   const isPublicPath = publicPaths.some(path => 
     request.nextUrl.pathname.startsWith(path)
   );

@@ -59,7 +59,13 @@ export async function POST(request: NextRequest) {
         
         if (parseFloat(quantita) > giacenza) {
           // Giacenza negativa permessa, ma notifica
-          // TODO: Trigger notifica PRELIEVO_NEGATIVO_O_LOTTO_ASSENTE
+          const { triggerNotifiche } = await import('@/lib/notifications-trigger');
+          await triggerNotifiche(
+            'PRELIEVO_NEGATIVO_O_LOTTO_ASSENTE',
+            `Prelievo supera giacenza: articolo ${articoloCodice}, quantità richiesta ${quantita}, giacenza ${giacenza}`,
+            articoloCodice,
+            `/dashboard/prelievo`
+          );
         }
 
         const now = new Date();
@@ -112,7 +118,13 @@ export async function POST(request: NextRequest) {
 
     if (quantitaNum > giacenza) {
       // Giacenza negativa permessa, ma notifica
-      // TODO: Trigger notifica PRELIEVO_NEGATIVO_O_LOTTO_ASSENTE
+      const { triggerNotifiche } = await import('@/lib/notifications-trigger');
+      await triggerNotifiche(
+        'PRELIEVO_NEGATIVO_O_LOTTO_ASSENTE',
+        `Prelievo supera giacenza: articolo ${articolo}, quantità richiesta ${quantita}, giacenza ${giacenza}`,
+        articolo,
+        `/dashboard/prelievo`
+      );
     }
 
     const now = new Date();
