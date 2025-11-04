@@ -92,11 +92,17 @@ function urlBase64ToUint8Array(base64String: string): BufferSource {
   const base64 = (base64String + padding).replace(/-/g, '+').replace(/_/g, '/');
 
   const rawData = window.atob(base64);
-  const outputArray = new Uint8Array(rawData.length);
-
-  for (let i = 0; i < rawData.length; ++i) {
-    outputArray[i] = rawData.charCodeAt(i);
+  const binaryString = rawData;
+  const bytes = new Uint8Array(binaryString.length);
+  
+  for (let i = 0; i < binaryString.length; ++i) {
+    bytes[i] = binaryString.charCodeAt(i);
   }
-  return outputArray;
+  
+  // Crea un nuovo ArrayBuffer e Uint8Array per evitare problemi di tipo
+  const buffer = new ArrayBuffer(bytes.length);
+  const view = new Uint8Array(buffer);
+  view.set(bytes);
+  return view;
 }
 
